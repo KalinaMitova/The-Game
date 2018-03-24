@@ -6,7 +6,7 @@
 
     public interface  IEngine
     {
-        IEnumerable<IPlayer> Players { get; }
+        //IList<IPlayer> Players { get; }
 
         void Initialize(IGameInitializationStrategy gameInitializationStratagy);
 

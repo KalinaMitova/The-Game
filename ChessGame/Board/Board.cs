@@ -1,7 +1,5 @@
 ﻿namespace ChessGame.Board
 {
-    using System;
-
     using ChessGame.Board.Contracts;
     using ChessGame.Common;
     using ChessGame.Figures.Contracts;
@@ -25,7 +23,6 @@
         public void AddFigure(IFigure figure, Position position)
         {
             ObjectValidator.CheckIfObjectIsNull(figure, GlobalErrorMessages.NullFigureErrorMessage);
-            this.CheckIfPositionIsValid(position);
             
             this.board[this.GetArrayRow(position.Row), this.GetArrayCol(position.Col)] = figure;
 
@@ -33,9 +30,19 @@
 
         public void RemoveFigure(Position position)
         {
-            this.CheckIfPositionIsValid(position);
-
             this.board[this.GetArrayRow(position.Row), this.GetArrayCol(position.Col)] = null;
+        }
+
+        public IFigure GetFigureAtPosition(Position position)
+        {
+            return this.board[this.GetArrayRow(position.Row), this.GetArrayCol(position.Col)];
+        }
+
+        public void MoveFigureAtPositon(Position from, Position to, IFigure figure)
+        {
+            this.RemoveFigure(to);
+            this.RemoveFigure(from);
+            this.AddFigure(figure, to);
         }
 
         private int GetArrayRow(int chessBoardRow) 
@@ -46,21 +53,6 @@
         private int GetArrayCol(char chessBoardCol)
         {
             return chessBoardCol - 'a';
-        }
-
-        private void CheckIfPositionIsValid(Position position)
-        {
-            if(position.Row < GlobalConstants.MinRowValueOnBoard 
-                | position.Row > this.TotalRows )
-            {
-                throw new IndexOutOfRangeException("Selected row position on the row is not valid!");
-            }
-
-            if (position.Col < GlobalConstants.MinColValueOnBoard
-                | position.Col > Convert.ToChar(this.TotalCols + GlobalConstants.MinColValueOnBoard))
-            {
-                throw new IndexOutOfRangeException("Selected column position on the row is not valid!");
-            }
         }
     }
 }

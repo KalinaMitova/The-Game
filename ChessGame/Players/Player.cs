@@ -12,6 +12,8 @@ namespace ChessGame.Players
     {
         private readonly ICollection<IFigure> figures;
 
+        private string name;
+
         public Player(string name, ChessColor color)
         {
             this.Name = name;
@@ -21,12 +23,23 @@ namespace ChessGame.Players
 
         public ChessColor Color { get; private set; }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return this.name; }
+
+            private set
+            {
+                if (value.Length > 20)
+                {
+                    throw new ArgumentException("The player name can not be longer than 20 characters!");
+                }
+                this.name = value;
+            }
+        }
 
         public void AddFigure(IFigure figure)
         {
             ObjectValidator.CheckIfObjectIsNull(GlobalErrorMessages.NullFigureErrorMessage);
-            //TODO:Check player and figure color
             this.CheckIfFigureExists(figure);          
             this.figures.Add(figure);
         }
@@ -34,7 +47,6 @@ namespace ChessGame.Players
         public void RemoveFigure(IFigure figure)
         {
             ObjectValidator.CheckIfObjectIsNull(GlobalErrorMessages.NullFigureErrorMessage);
-            //TODO:Check player and figure color
             this.CheckIfFigureDoesNotExest(figure);
             this.figures.Remove(figure);
         }
@@ -49,7 +61,18 @@ namespace ChessGame.Players
 
         private void CheckIfFigureDoesNotExest(IFigure figure)
         {
-            throw new InvalidOperationException("This player does not own this figure!");
+            if (!this.figures.Contains(figure))
+            {
+                throw new InvalidOperationException("This player does not own this figure!");
+            }
+        }
+
+        private void CheckIfFigureColorPlayerColorAreAlike(IFigure figure)
+        {
+            if (figure.Color != this.Color)
+            {
+                throw new InvalidOperationException("This player does not own this figure!");
+            }
         }
     }
 }

@@ -44,6 +44,8 @@
             //Second player pawns row (7) and Second player main figure row (8)
             AddPawnsToBoardRow(secondPlayer, board, GlobalConstants.StandardSecondPlayerPawnChessRow);
             AddPlayerMainFiguresRowToBoard(secondPlayer, board, GlobalConstants.StandardSecondPlayerMainFigureChessRow);
+
+            //board.Print();
         }
 
         private void AddPawnsToBoardRow(IPlayer player, IBoard board, int chessRow)
